@@ -54,9 +54,14 @@ namespace BancoFinal.Formularios
                     {
                         if (MessageBox.Show("Tem certeza que deseja excluir o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            clienteRepositorio.Excluir(codigo);
-                            MessageBox.Show("Cliente excluído com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            AtualizarDgv();
+                            clienteServico.Excluir(codigo);
+                            if (string.IsNullOrEmpty(clienteServico.Erros))
+                            {
+                                MessageBox.Show("Cliente excluído com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                AtualizarDgv();
+                            }
+                            else
+                                MessageBox.Show(clienteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     catch (Exception ex)

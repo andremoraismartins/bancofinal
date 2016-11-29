@@ -9,5 +9,7 @@ namespace BancoFinal.Servicos.Interfaces
         void Adicionar(Cliente objeto);
 
         void Alterar(Cliente objeto);
+
+        void Excluir(int codigo);
     }
 }

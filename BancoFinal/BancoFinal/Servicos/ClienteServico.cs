@@ -9,6 +9,7 @@ namespace BancoFinal.Servicos
         public string Erros { get; private set; }
 
         private ClienteRepositorio ClienteRepositorio { get; set; } = new ClienteRepositorio();
+        private ContaCorrenteRepositorio ContaCorrenteRepositorio { get; set; } = new ContaCorrenteRepositorio();
 
         public void Adicionar(Cliente objeto)
         {
@@ -53,6 +54,23 @@ namespace BancoFinal.Servicos
 
             if (string.IsNullOrEmpty(Erros))
                 ClienteRepositorio.Alterar(objeto);
+        }
+
+        public void Excluir(int codigo)
+        {
+            Erros = string.Empty;
+
+            Cliente cliente = ClienteRepositorio.BuscarPorCodigo(codigo);
+
+            //Validar se o registro da conta de origem foi encontrado no banco
+            if (cliente == null || cliente.CliCodigo < 0)
+                Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de origem!\n";
+
+            if (ContaCorrenteRepositorio.BuscarPorCliente(cliente.CliCodigo).Count > 0)
+                Erros += "Não é possível excluir este cliente, pois existe uma conta corrente cadastrada para ele!\n";
+
+            if (string.IsNullOrEmpty(Erros))
+                ClienteRepositorio.Excluir(cliente.CliCodigo);
         }
     }
 }

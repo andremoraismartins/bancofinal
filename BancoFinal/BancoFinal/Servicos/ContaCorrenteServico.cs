@@ -111,11 +111,11 @@ namespace BancoFinal.Servicos
             ContaCorrente contaCorrenteDestino = ContaCorrenteRepositorio.BuscarPorCodigo(codigoDestino);
             
             //Validar se o registro da conta de origem foi encontrado no banco
-            if (contaCorrenteOrigem == null || contaCorrenteOrigem.ConCodigo <= -1)
+            if (contaCorrenteOrigem == null || contaCorrenteOrigem.ConCodigo < 0)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de origem!\n";
 
             //Validar se o registro da conta de destino foi encontrado no banco
-            if (contaCorrenteDestino == null || contaCorrenteDestino.ConCodigo <= -1)
+            if (contaCorrenteDestino == null || contaCorrenteDestino.ConCodigo < 0)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de destino!\n";
 
             //Validar o valor sacado
