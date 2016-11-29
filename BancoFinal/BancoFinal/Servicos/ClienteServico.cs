@@ -8,7 +8,7 @@ namespace BancoFinal.Servicos
     {
         public string Erros { get; private set; }
 
-        public ClienteRepositorio ClienteRepositorio { get; private set; } = new ClienteRepositorio();
+        private ClienteRepositorio ClienteRepositorio { get; set; } = new ClienteRepositorio();
 
         public void Adicionar(Cliente objeto)
         {

@@ -36,13 +36,9 @@ namespace BancoFinal.Formularios
         private void FrmBuscarCliente_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnSelecionarCliente_Click(sender, e);
-            }
         }
 
         private void btnSelecionarCliente_Click(object sender, EventArgs e)
@@ -64,14 +60,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }

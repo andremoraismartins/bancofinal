@@ -1,13 +1,13 @@
 ﻿using BancoFinal.Repositorios;
 using BancoFinal.Servicos;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace BancoFinal.Formularios
 {
     public partial class FrmListarContaCorrente : Form
     {
+        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
         ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
 
         public FrmListarContaCorrente()
@@ -33,7 +33,7 @@ namespace BancoFinal.Formularios
         {
             try
             {
-                dgv.DataSource = contaCorrenteServico.ContaCorrenteRepositorio.ListarCompleto();
+                dgv.DataSource = contaCorrenteRepositorio.ListarCompleto();
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace BancoFinal.Formularios
                     {
                         if (MessageBox.Show("Tem certeza que deseja excluir o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            contaCorrenteServico.ContaCorrenteRepositorio.Excluir(codigo);
+                            contaCorrenteRepositorio.Excluir(codigo);
                             MessageBox.Show("Conta corrente excluída com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AtualizarDgv();
                         }
@@ -70,14 +70,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnNovo_Click(object sender, EventArgs e)
@@ -96,11 +92,9 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarSaque frm = new FrmRealizarSaque(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarSaque frm = new FrmRealizarSaque(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
-                        {
                             frm.ShowDialog();
-                        }
                         AtualizarDgv();
                     }
                     catch (Exception ex)
@@ -110,14 +104,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnRealizarDeposito_Click(object sender, EventArgs e)
@@ -129,11 +119,9 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarDeposito frm = new FrmRealizarDeposito(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarDeposito frm = new FrmRealizarDeposito(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
-                        {
                             frm.ShowDialog();
-                        }
                         AtualizarDgv();
                     }
                     catch (Exception ex)
@@ -143,14 +131,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnRealizarTransferencia_Click(object sender, EventArgs e)
@@ -162,11 +146,9 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarTransferencia frm = new FrmRealizarTransferencia(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarTransferencia frm = new FrmRealizarTransferencia(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
-                        {
                             frm.ShowDialog();
-                        }
                         AtualizarDgv();
                     }
                     catch (Exception ex)
@@ -176,14 +158,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }

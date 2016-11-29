@@ -7,8 +7,6 @@ namespace BancoFinal.Servicos.Interfaces
     {
         string Erros { get; }
 
-        ContaCorrenteRepositorio ContaCorrenteRepositorio { get; }
-
         void Adicionar(ContaCorrente objeto);
 
         void Alterar(int codigo, ContaCorrente objeto);

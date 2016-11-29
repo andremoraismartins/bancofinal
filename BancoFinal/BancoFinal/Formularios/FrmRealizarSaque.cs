@@ -49,9 +49,7 @@ namespace BancoFinal.Formularios
                     this.Close();
                 }
                 else
-                {
                     MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             catch (Exception ex)
             {

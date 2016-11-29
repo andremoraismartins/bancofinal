@@ -8,8 +8,9 @@ namespace BancoFinal.Formularios
 {
     public partial class FrmCadatrarContaCorrente : Form
     {
+        ClienteRepositorio clienteRepositorio = new ClienteRepositorio();
+        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
         ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
-        ClienteServico clienteServico = new ClienteServico();
 
         public FrmCadatrarContaCorrente()
         {
@@ -26,22 +27,17 @@ namespace BancoFinal.Formularios
         private void FrmCadatrarCliente_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnCadastrar_Click(sender, e);
-            }
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
             int codigo = (!string.IsNullOrEmpty(txtCliCodigo.Text) && int.TryParse(txtCliCodigo.Text, out codigo) && codigo > -1 ? codigo : -1);
-            Cliente cliente = clienteServico.ClienteRepositorio.BuscarPorCodigo(codigo);
+            Cliente cliente = clienteRepositorio.BuscarPorCodigo(codigo);
             ContaCorrente contaCorrente = new ContaCorrente(cliente);
-
-
+            
             try
             {
                 contaCorrenteServico.Adicionar(contaCorrente);
@@ -53,9 +49,7 @@ namespace BancoFinal.Formularios
                     this.Close();
                 }
                 else
-                {
                     MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             catch (Exception ex)
             {

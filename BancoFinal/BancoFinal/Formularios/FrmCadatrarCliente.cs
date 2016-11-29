@@ -1,5 +1,4 @@
 ﻿using BancoFinal.Entidades;
-using BancoFinal.Repositorios;
 using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
@@ -45,13 +44,9 @@ namespace BancoFinal.Formularios
         private void FrmCadatrarCliente_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnCadastrar_Click(sender, e);
-            }
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
@@ -75,12 +70,9 @@ namespace BancoFinal.Formularios
                         MessageBox.Show("Cliente adicionado com sucesso!", "Sucesso ao Adicionar", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         Limpar();
                         this.Close();
-
                     }
                     else
-                    {
                         MessageBox.Show(clienteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
                 }
                 else
                 {
@@ -93,9 +85,7 @@ namespace BancoFinal.Formularios
                         this.Close();
                     }
                     else
-                    {
                         MessageBox.Show(clienteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
                 }
             }
             catch (Exception ex)

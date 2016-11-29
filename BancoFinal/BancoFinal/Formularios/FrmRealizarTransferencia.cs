@@ -1,5 +1,4 @@
 ﻿using BancoFinal.Entidades;
-using BancoFinal.Repositorios;
 using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;

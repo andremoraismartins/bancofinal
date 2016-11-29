@@ -9,7 +9,7 @@ namespace BancoFinal.Servicos
     {
         public string Erros { get; private set; }
 
-        public ContaCorrenteRepositorio ContaCorrenteRepositorio { get; private set; } = new ContaCorrenteRepositorio();
+        private ContaCorrenteRepositorio ContaCorrenteRepositorio { get; set; } = new ContaCorrenteRepositorio();
 
         public void Adicionar(ContaCorrente objeto)
         {

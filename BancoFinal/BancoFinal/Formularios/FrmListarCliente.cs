@@ -7,6 +7,7 @@ namespace BancoFinal.Formularios
 {
     public partial class FrmListarCliente : Form
     {
+        ClienteRepositorio clienteRepositorio = new ClienteRepositorio();
         ClienteServico clienteServico = new ClienteServico();
 
         public FrmListarCliente()
@@ -17,24 +18,18 @@ namespace BancoFinal.Formularios
         private void FrmListarCliente_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
-            {
                 btnNovo_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F3)
-            {
                 btnAlterar_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F4)
-            {
                 btnExcluir_Click(sender, e);
-            }
         }
 
         private void AtualizarDgv()
         {
             try
             {
-                dgv.DataSource = clienteServico.ClienteRepositorio.Listar();
+                dgv.DataSource = clienteRepositorio.Listar();
             }
             catch (Exception ex)
             {
@@ -59,7 +54,7 @@ namespace BancoFinal.Formularios
                     {
                         if (MessageBox.Show("Tem certeza que deseja excluir o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            clienteServico.ClienteRepositorio.Excluir(codigo);
+                            clienteRepositorio.Excluir(codigo);
                             MessageBox.Show("Cliente excluído com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AtualizarDgv();
                         }
@@ -71,14 +66,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnNovo_Click(object sender, EventArgs e)
@@ -97,11 +88,9 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmCadatrarCliente frm = new FrmCadatrarCliente(clienteServico.ClienteRepositorio.BuscarPorCodigo(codigo));
+                        FrmCadatrarCliente frm = new FrmCadatrarCliente(clienteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
-                        {
                             frm.ShowDialog();
-                        }
                         AtualizarDgv();
                     }
                     catch (Exception ex)
@@ -111,14 +100,10 @@ namespace BancoFinal.Formularios
                     }
                 }
                 else
-                {
                     MessageBox.Show("Não foi possível encontrar o código do registro selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             else
-            {
                 MessageBox.Show("Não existe nenhum registro selecionado na tabela!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }

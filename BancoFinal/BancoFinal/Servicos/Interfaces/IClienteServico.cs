@@ -7,8 +7,6 @@ namespace BancoFinal.Servicos.Interfaces
     {
         string Erros { get; }
 
-        ClienteRepositorio ClienteRepositorio { get; }
-
         void Adicionar(Cliente objeto);
 
         void Alterar(int codigo, Cliente objeto);
