@@ -1,5 +1,5 @@
-﻿using BancoFinal.Classes;
-using BancoFinal.Repositorios;
+﻿using BancoFinal.Entidades;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -8,12 +8,12 @@ namespace BancoFinal.Formularios
     public partial class FrmRealizarDeposito : Form
     {
         ContaCorrente contaCorrente = null;
-        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
+        ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
 
         public FrmRealizarDeposito(ContaCorrente contaCorrente)
         {
             InitializeComponent();
-            if (!string.IsNullOrEmpty(contaCorrente.Validar()))
+            if (contaCorrente != null && contaCorrente.ConCodigo > 0 && contaCorrente.Cliente != null && contaCorrente.Cliente.CliCodigo > 0)
             {
                 this.contaCorrente = contaCorrente;
                 txtConCodigo.Text = this.contaCorrente.ConCodigo.ToString();
@@ -24,7 +24,7 @@ namespace BancoFinal.Formularios
             }
             else
             {
-                MessageBox.Show("Para acessar essa tela é necessário selecionar uma conta corrente!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Para acessar essa tela é necessário selecionar uma conta corrente válida!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
         }
@@ -32,24 +32,26 @@ namespace BancoFinal.Formularios
         private void FrmRealizarDeposito_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnConfirmar_Click(sender, e);
-            }
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            contaCorrente.Depositar(nudValor.Value);
-
             try
             {
-                contaCorrenteRepositorio.Alterar(contaCorrente.ConCodigo, contaCorrente);
-                MessageBox.Show("Depósito realizado com sucesso!", "Succeso no depósito!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                contaCorrenteServico.Depositar(contaCorrente.ConCodigo, nudValor.Value);
+
+                if (string.IsNullOrEmpty(contaCorrenteServico.Erros))
+                {
+                    MessageBox.Show("Depósito realizado com sucesso!", "Succeso no depósito!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {

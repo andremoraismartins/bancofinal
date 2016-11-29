@@ -1,5 +1,6 @@
-﻿using BancoFinal.Classes;
+﻿using BancoFinal.Entidades;
 using BancoFinal.Repositorios;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace BancoFinal.Formularios
     public partial class FrmCadatrarCliente : Form
     {
         Cliente clienteAlterar = null;
-        ClienteRepositorio clienteRepo = new ClienteRepositorio();
+        ClienteServico clienteServico = new ClienteServico();
 
         public FrmCadatrarCliente()
         {
@@ -63,34 +64,44 @@ namespace BancoFinal.Formularios
                 CliNome = txtCliNome.Text
             };
 
-            string erros = cliente.Validar();
-
-            if (string.IsNullOrEmpty(erros))
+            try
             {
-                try
+                if (this.clienteAlterar == null)
                 {
-                    if (this.clienteAlterar == null)
+                    clienteServico.Adicionar(cliente);
+
+                    if (string.IsNullOrEmpty(clienteServico.Erros))
                     {
-                        clienteRepo.Adicionar(cliente);
                         MessageBox.Show("Cliente adicionado com sucesso!", "Sucesso ao Adicionar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Limpar();
+                        this.Close();
+
                     }
                     else
                     {
-                        clienteRepo.Alterar(cliente.CliCodigo, cliente);
-                        MessageBox.Show("Cliente alterado com sucesso!", "Sucesso ao alterar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(clienteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    Limpar();
-                    this.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    clienteServico.Alterar(cliente.CliCodigo, cliente);
+
+                    if (string.IsNullOrEmpty(clienteServico.Erros))
+                    {
+                        MessageBox.Show("Cliente alterado com sucesso!", "Sucesso ao alterar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Limpar();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show(clienteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using BancoFinal.Classes;
+﻿using BancoFinal.Entidades;
 using BancoFinal.Repositorios;
 using System;
 using System.Windows.Forms;

@@ -1,4 +1,5 @@
 ﻿using BancoFinal.Repositorios;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -6,7 +7,7 @@ namespace BancoFinal.Formularios
 {
     public partial class FrmListarCliente : Form
     {
-        ClienteRepositorio clienteRepo = new ClienteRepositorio();
+        ClienteServico clienteServico = new ClienteServico();
 
         public FrmListarCliente()
         {
@@ -33,7 +34,7 @@ namespace BancoFinal.Formularios
         {
             try
             {
-                dgv.DataSource = clienteRepo.Listar();
+                dgv.DataSource = clienteServico.ClienteRepositorio.Listar();
             }
             catch (Exception ex)
             {
@@ -58,7 +59,7 @@ namespace BancoFinal.Formularios
                     {
                         if (MessageBox.Show("Tem certeza que deseja excluir o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            clienteRepo.Excluir(codigo);
+                            clienteServico.ClienteRepositorio.Excluir(codigo);
                             MessageBox.Show("Cliente excluído com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AtualizarDgv();
                         }
@@ -96,7 +97,7 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmCadatrarCliente frm = new FrmCadatrarCliente(clienteRepo.BuscarPorCodigo(codigo));
+                        FrmCadatrarCliente frm = new FrmCadatrarCliente(clienteServico.ClienteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
                         {
                             frm.ShowDialog();

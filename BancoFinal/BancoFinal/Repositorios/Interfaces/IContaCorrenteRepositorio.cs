@@ -1,4 +1,4 @@
-﻿using BancoFinal.Classes;
+﻿using BancoFinal.Entidades;
 using System.Collections.Generic;
 
 namespace BancoFinal.Repositorios.Interfaces

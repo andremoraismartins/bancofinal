@@ -1,5 +1,6 @@
-﻿using BancoFinal.Classes;
+﻿using BancoFinal.Entidades;
 using BancoFinal.Repositorios;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -9,12 +10,12 @@ namespace BancoFinal.Formularios
     {
         ContaCorrente contaCorrenteOrigem = null;
         ContaCorrente contaCorrenteDestino = null;
-        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
+        ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
 
         public FrmRealizarTransferencia(ContaCorrente contaCorrenteDestino)
         {
             InitializeComponent();
-            if (!string.IsNullOrEmpty(contaCorrenteDestino.Validar()))
+            if (contaCorrenteDestino != null && contaCorrenteDestino.ConCodigo > 0 && contaCorrenteDestino.Cliente != null && contaCorrenteDestino.Cliente.CliCodigo > 0)
             {
                 this.contaCorrenteDestino = contaCorrenteDestino;
                 txtConCodigoDestino.Text = this.contaCorrenteDestino.ConCodigo.ToString();
@@ -33,41 +34,31 @@ namespace BancoFinal.Formularios
         private void FrmRealizarTransferencia_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnConfirmar_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F3)
-            {
                 btnBuscarContaCorrente_Click(sender, e);
-            }
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            string erros = contaCorrenteOrigem.Transferir(contaCorrenteDestino, nudValor.Value);
-
-            if (string.IsNullOrEmpty(erros))
+            try
             {
-                try
+                contaCorrenteServico.Transferir(contaCorrenteOrigem.ConCodigo, contaCorrenteDestino.ConCodigo, nudValor.Value);
+
+                if (string.IsNullOrEmpty(contaCorrenteServico.Erros))
                 {
-                    contaCorrenteRepositorio.Alterar(contaCorrenteOrigem.ConCodigo, contaCorrenteOrigem);
-                    contaCorrenteRepositorio.Alterar(contaCorrenteDestino.ConCodigo, contaCorrenteDestino);
                     MessageBox.Show("Transferência realizada com sucesso!", "Succeso no depósito!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
-                }
+                else
+                    MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 
@@ -93,9 +84,7 @@ namespace BancoFinal.Formularios
                     nudValor.Focus();
                 }
                 else
-                {
                     MessageBox.Show("É necessário selecionar uma conta corrente diferente da conta corrente de destino!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
     }

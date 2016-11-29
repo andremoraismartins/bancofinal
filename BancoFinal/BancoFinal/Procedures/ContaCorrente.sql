@@ -34,11 +34,14 @@ CREATE PROCEDURE [dbo].[ContaCorrenteBuscarPorCodigo]
 	@conCodigo int
 AS
 BEGIN
-	SELECT	[ConCodigo], 
-			[ConSaldo], 
-			[CliCodigo] 
+	SELECT	[ContaCorrente].[ConCodigo],
+			[ContaCorrente].[ConSaldo],
+			[Cliente].[CliCodigo],
+			[Cliente].[CliNome],
+			[Cliente].[CliCpf]
 		FROM [dbo].[ContaCorrente]
-		WHERE [ConCodigo] = @conCodigo
+		INNER JOIN [dbo].[Cliente] ON ([Cliente].[CliCodigo] = [ContaCorrente].[CliCodigo])
+		WHERE [ContaCorrente].[ConCodigo] = @conCodigo
 END
 GO
 
@@ -49,11 +52,14 @@ CREATE PROCEDURE [dbo].[ContaCorrenteBuscarPorCliente]
 	@cliCodigo int
 AS
 BEGIN
-	SELECT	[ConCodigo], 
-			[ConSaldo], 
-			[CliCodigo] 
+	SELECT	[ContaCorrente].[ConCodigo],
+			[ContaCorrente].[ConSaldo],
+			[Cliente].[CliCodigo],
+			[Cliente].[CliNome],
+			[Cliente].[CliCpf]
 		FROM [dbo].[ContaCorrente]
-		WHERE [CliCodigo] = @cliCodigo
+		INNER JOIN [dbo].[Cliente] ON ([Cliente].[CliCodigo] = [ContaCorrente].[CliCodigo])
+		WHERE [Cliente].[CliCodigo] = @cliCodigo
 END
 GO
 

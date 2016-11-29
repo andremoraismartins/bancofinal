@@ -1,5 +1,5 @@
-﻿using BancoFinal.Classes;
-using BancoFinal.Repositorios;
+﻿using BancoFinal.Entidades;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -8,12 +8,12 @@ namespace BancoFinal.Formularios
     public partial class FrmRealizarSaque : Form
     {
         ContaCorrente contaCorrente = null;
-        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
+        ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
 
         public FrmRealizarSaque(ContaCorrente contaCorrente)
         {
             InitializeComponent();
-            if (!string.IsNullOrEmpty(contaCorrente.Validar()))
+            if (contaCorrente != null && contaCorrente.ConCodigo > 0 && contaCorrente.Cliente != null && contaCorrente.Cliente.CliCodigo > 0)
             {
                 this.contaCorrente = contaCorrente;
                 txtConCodigo.Text = this.contaCorrente.ConCodigo.ToString();
@@ -32,36 +32,31 @@ namespace BancoFinal.Formularios
         private void FrmRealizarDeposito_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
-            }
             else if (e.KeyCode == Keys.F2)
-            {
                 btnConfirmar_Click(sender, e);
-            }
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            string erros = contaCorrente.Sacar(nudValor.Value);
-
-            if (string.IsNullOrEmpty(erros))
+            try
             {
-                try
+                contaCorrenteServico.Sacar(contaCorrente.ConCodigo, nudValor.Value);
+
+                if (string.IsNullOrEmpty(contaCorrenteServico.Erros))
                 {
-                    contaCorrenteRepositorio.Alterar(contaCorrente.ConCodigo, contaCorrente);
                     MessageBox.Show("Saque realizado com sucesso!", "Succeso no depósito!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 

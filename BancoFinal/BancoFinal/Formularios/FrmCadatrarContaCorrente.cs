@@ -1,5 +1,6 @@
-﻿using BancoFinal.Classes;
+﻿using BancoFinal.Entidades;
 using BancoFinal.Repositorios;
+using BancoFinal.Servicos;
 using System;
 using System.Windows.Forms;
 
@@ -7,8 +8,8 @@ namespace BancoFinal.Formularios
 {
     public partial class FrmCadatrarContaCorrente : Form
     {
-        ContaCorrenteRepositorio contaCorrenteRepo = new ContaCorrenteRepositorio();
-        ClienteRepositorio clienteRepositorio = new ClienteRepositorio();
+        ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
+        ClienteServico clienteServico = new ClienteServico();
 
         public FrmCadatrarContaCorrente()
         {
@@ -37,29 +38,29 @@ namespace BancoFinal.Formularios
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
             int codigo = (!string.IsNullOrEmpty(txtCliCodigo.Text) && int.TryParse(txtCliCodigo.Text, out codigo) && codigo > -1 ? codigo : -1);
-            Cliente cliente = clienteRepositorio.BuscarPorCodigo(codigo);
+            Cliente cliente = clienteServico.ClienteRepositorio.BuscarPorCodigo(codigo);
             ContaCorrente contaCorrente = new ContaCorrente(cliente);
 
-            string erros = contaCorrente.Validar();
 
-            if (string.IsNullOrEmpty(erros))
+            try
             {
-                try
+                contaCorrenteServico.Adicionar(contaCorrente);
+
+                if (string.IsNullOrEmpty(contaCorrenteServico.Erros))
                 {
-                    contaCorrenteRepo.Adicionar(contaCorrente);
                     MessageBox.Show("Conta corrente adicionada com sucesso!", "Sucesso ao Adicionar", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Limpar();
                     this.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    MessageBox.Show(contaCorrenteServico.Erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(erros, "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ocorreu um erro inesperado!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 

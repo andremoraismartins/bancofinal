@@ -1,4 +1,5 @@
 ﻿using BancoFinal.Repositorios;
+using BancoFinal.Servicos;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,7 +8,7 @@ namespace BancoFinal.Formularios
 {
     public partial class FrmListarContaCorrente : Form
     {
-        ContaCorrenteRepositorio contaCorrenteRepositorio = new ContaCorrenteRepositorio();
+        ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico();
 
         public FrmListarContaCorrente()
         {
@@ -17,40 +18,22 @@ namespace BancoFinal.Formularios
         private void FrmListarCliente_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
-            {
                 btnNovo_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F4)
-            {
                 btnExcluir_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F5)
-            {
                 btnRealizarSaque_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F6)
-            {
                 btnRealizarDeposito_Click(sender, e);
-            }
             else if (e.KeyCode == Keys.F7)
-            {
                 btnRealizarTransferencia_Click(sender, e);
-            }
         }
 
         private void AtualizarDgv()
         {
             try
             {
-                dgv.DataSource = contaCorrenteRepositorio.ListarCompleto();
-                //dgv.DataSource = contaCorrenteRepositorio.Listar().Select(x => new
-                //{
-                //    x.ConCodigo,
-                //    x.ConSaldo,
-                //    x.Cliente.CliCodigo,
-                //    x.Cliente.CliCpf,
-                //    x.Cliente.CliNome
-                //}).ToList();
+                dgv.DataSource = contaCorrenteServico.ContaCorrenteRepositorio.ListarCompleto();
             }
             catch (Exception ex)
             {
@@ -75,7 +58,7 @@ namespace BancoFinal.Formularios
                     {
                         if (MessageBox.Show("Tem certeza que deseja excluir o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            contaCorrenteRepositorio.Excluir(codigo);
+                            contaCorrenteServico.ContaCorrenteRepositorio.Excluir(codigo);
                             MessageBox.Show("Conta corrente excluída com sucesso!", "Sucesso ao excluir", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AtualizarDgv();
                         }
@@ -113,7 +96,7 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarSaque frm = new FrmRealizarSaque(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarSaque frm = new FrmRealizarSaque(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
                         {
                             frm.ShowDialog();
@@ -146,7 +129,7 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarDeposito frm = new FrmRealizarDeposito(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarDeposito frm = new FrmRealizarDeposito(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
                         {
                             frm.ShowDialog();
@@ -179,7 +162,7 @@ namespace BancoFinal.Formularios
                 {
                     try
                     {
-                        FrmRealizarTransferencia frm = new FrmRealizarTransferencia(contaCorrenteRepositorio.BuscarPorCodigo(codigo));
+                        FrmRealizarTransferencia frm = new FrmRealizarTransferencia(contaCorrenteServico.ContaCorrenteRepositorio.BuscarPorCodigo(codigo));
                         if (!frm.IsDisposed)
                         {
                             frm.ShowDialog();

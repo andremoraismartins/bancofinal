@@ -50,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Cliente.cs" />
-    <Compile Include="Classes\Conta.cs" />
-    <Compile Include="Classes\ContaCorrente.cs" />
-    <Compile Include="Classes\Validacao.cs" />
+    <Compile Include="Entidades\Cliente.cs" />
+    <Compile Include="Entidades\Conta.cs" />
+    <Compile Include="Entidades\ContaCorrente.cs" />
+    <Compile Include="Entidades\Validacao.cs" />
     <Compile Include="Formularios\FrmBuscarContaCorrente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +122,10 @@
     <Compile Include="Repositorios\Interfaces\IClienteRepositorio.cs" />
     <Compile Include="Repositorios\Interfaces\IRepositorio.cs" />
     <Compile Include="Repositorios\Interfaces\IContaCorrenteRepositorio.cs" />
+    <Compile Include="Servicos\ClienteServico.cs" />
+    <Compile Include="Servicos\ContaCorrenteServico.cs" />
+    <Compile Include="Servicos\Interfaces\IContaCorrenteServico.cs" />
+    <Compile Include="Servicos\Interfaces\IClienteServico.cs" />
     <EmbeddedResource Include="Formularios\FrmBuscarContaCorrente.resx">
       <DependentUpon>FrmBuscarContaCorrente.cs</DependentUpon>
     </EmbeddedResource>
@@ -177,7 +181,9 @@
   <ItemGroup>
     <Content Include="Procedures\Cliente.sql" />
     <Content Include="Procedures\ContaCorrente.sql" />
+    <Content Include="ToDo.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' == ''" />

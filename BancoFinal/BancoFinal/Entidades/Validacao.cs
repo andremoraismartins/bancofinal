@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BancoFinal.Classes
+namespace BancoFinal.Entidades
 {
     public static class Validacao
     {

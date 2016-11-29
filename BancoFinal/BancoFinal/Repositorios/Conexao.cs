@@ -11,27 +11,27 @@ namespace BancoFinal.Repositorios
                                 + "Integrated Security=True;"
                                 + "Pooling=False;";
 
-        SqlConnection connection;
+        protected SqlConnection Connection { get; private set; }
 
         public Conexao()
         {
-            connection = new SqlConnection(connectionString);
+            Connection = new SqlConnection(connectionString);
         }
 
-        private void AtivarConexao(bool ativar)
+        private void Open(bool ativar)
         {
             if (ativar)
             {
-                if (connection.State != System.Data.ConnectionState.Open)
+                if (Connection.State != System.Data.ConnectionState.Open)
                 {
-                    connection.Open();
+                    Connection.Open();
                 }
             }
             else
             {
-                if (connection.State != System.Data.ConnectionState.Closed)
+                if (Connection.State != System.Data.ConnectionState.Closed)
                 {
-                    connection.Close();
+                    Connection.Close();
                 }
             }
         }
@@ -41,8 +41,8 @@ namespace BancoFinal.Repositorios
             try
             {
                 DataTable dt = new DataTable();
-                AtivarConexao(true);
-                SqlCommand cmd = new SqlCommand(proc.ToString(), connection);
+                Open(true);
+                SqlCommand cmd = new SqlCommand(proc.ToString(), Connection);
                 foreach (var parametro in parametros)
                 {
                     cmd.Parameters.AddWithValue(parametro.ParameterName, parametro.Value);
@@ -60,7 +60,7 @@ namespace BancoFinal.Repositorios
             }
             finally
             {
-                AtivarConexao(false);
+                Open(false);
             }
         }
 
@@ -68,8 +68,8 @@ namespace BancoFinal.Repositorios
         {
             try
             {
-                AtivarConexao(true);
-                SqlCommand cmd = new SqlCommand(proc.ToString(), connection);
+                Open(true);
+                SqlCommand cmd = new SqlCommand(proc.ToString(), Connection);
                 foreach (var parametro in parametros)
                 {
                     cmd.Parameters.AddWithValue(parametro.ParameterName, parametro.Value);
@@ -84,7 +84,7 @@ namespace BancoFinal.Repositorios
             }
             finally
             {
-                AtivarConexao(false);
+                Open(false);
             }
         }
     }
