@@ -38,9 +38,7 @@ namespace BancoFinal.Entidades
                 cpf = cpf.Trim();
                 cpf = cpf.Replace(".", "").Replace("-", "");
                 if (cpf.Length != 11)
-                {
                     return false;
-                }
                 tempCpf = cpf.Substring(0, 9);
                 soma = 0;
 
@@ -62,14 +60,7 @@ namespace BancoFinal.Entidades
                 else
                     resto = 11 - resto;
                 digito = digito + resto.ToString();
-                if (cpf.EndsWith(digito))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return (cpf.EndsWith(digito));
             }
             else
             {

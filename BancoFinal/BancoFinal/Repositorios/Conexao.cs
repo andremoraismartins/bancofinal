@@ -18,21 +18,17 @@ namespace BancoFinal.Repositorios
             Connection = new SqlConnection(connectionString);
         }
 
-        private void Open(bool ativar)
+        private void AtivarConexao(bool ativar)
         {
             if (ativar)
             {
                 if (Connection.State != System.Data.ConnectionState.Open)
-                {
                     Connection.Open();
-                }
             }
             else
             {
                 if (Connection.State != System.Data.ConnectionState.Closed)
-                {
                     Connection.Close();
-                }
             }
         }
 
@@ -41,12 +37,10 @@ namespace BancoFinal.Repositorios
             try
             {
                 DataTable dt = new DataTable();
-                Open(true);
+                AtivarConexao(true);
                 SqlCommand cmd = new SqlCommand(proc.ToString(), Connection);
                 foreach (var parametro in parametros)
-                {
                     cmd.Parameters.AddWithValue(parametro.ParameterName, parametro.Value);
-                }
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.ExecuteNonQuery();
                 SqlDataAdapter da = new SqlDataAdapter();
@@ -60,7 +54,7 @@ namespace BancoFinal.Repositorios
             }
             finally
             {
-                Open(false);
+                AtivarConexao(false);
             }
         }
 
@@ -68,12 +62,10 @@ namespace BancoFinal.Repositorios
         {
             try
             {
-                Open(true);
+                AtivarConexao(true);
                 SqlCommand cmd = new SqlCommand(proc.ToString(), Connection);
                 foreach (var parametro in parametros)
-                {
                     cmd.Parameters.AddWithValue(parametro.ParameterName, parametro.Value);
-                }
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.ExecuteNonQuery();
                 return true;
@@ -84,7 +76,7 @@ namespace BancoFinal.Repositorios
             }
             finally
             {
-                Open(false);
+                AtivarConexao(false);
             }
         }
     }
