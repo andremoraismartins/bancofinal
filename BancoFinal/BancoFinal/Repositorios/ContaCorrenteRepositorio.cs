@@ -17,10 +17,10 @@ namespace BancoFinal.Repositorios
                             new SqlParameter("@cliCodigo", objeto.Cliente.CliCodigo));
         }
 
-        public void Alterar(int codigo, ContaCorrente objetoAlterado)
+        public void Alterar(ContaCorrente objetoAlterado)
         {
             Escrever(Procedures.ContaCorrenteAlterar,
-                            new SqlParameter("@conCodigo", codigo),
+                            new SqlParameter("@conCodigo", objetoAlterado.ConCodigo),
                             new SqlParameter("@conSaldo", objetoAlterado.ConSaldo),
                             new SqlParameter("@cliCodigo", objetoAlterado.Cliente.CliCodigo));
         }

@@ -34,7 +34,7 @@ namespace BancoFinal.Servicos
                 ContaCorrenteRepositorio.Adicionar(objeto);
         }
 
-        public void Alterar(int codigo, ContaCorrente objeto)
+        public void Alterar(ContaCorrente objeto)
         {
             Erros = string.Empty;
 
@@ -54,7 +54,7 @@ namespace BancoFinal.Servicos
                 Erros += "Esse cliente já possui uma conta corrente, portanto não é possível criar uma nova!\n";
 
             if (string.IsNullOrEmpty(Erros))
-                ContaCorrenteRepositorio.Alterar(codigo, objeto);
+                ContaCorrenteRepositorio.Alterar(objeto);
         }
 
         public void Depositar(int codigo, decimal valor)
@@ -62,17 +62,19 @@ namespace BancoFinal.Servicos
             Erros = string.Empty;
 
             ContaCorrente contaCorrente = ContaCorrenteRepositorio.BuscarPorCodigo(codigo);
-
-            if (contaCorrente == null || contaCorrente.ConCodigo <= -1)
+            
+            //Validar se o registro foi encontrado no banco
+            if (contaCorrente == null || contaCorrente.ConCodigo < 0)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de origem!\n";
 
+            //Validar o valor depositado
             if (valor <= 0)
                 Erros += "Não foi possível realizar o depósito, pois o valor informado é inválido!";
 
             if (string.IsNullOrEmpty(Erros))
             {
                 contaCorrente.ConSaldo += valor;
-                ContaCorrenteRepositorio.Alterar(contaCorrente.ConCodigo, contaCorrente);
+                ContaCorrenteRepositorio.Alterar(contaCorrente);
             }            
         }
 
@@ -82,19 +84,22 @@ namespace BancoFinal.Servicos
 
             ContaCorrente contaCorrente = ContaCorrenteRepositorio.BuscarPorCodigo(codigo);
 
-            if (contaCorrente == null || contaCorrente.ConCodigo <= -1)
+            //Validar se o registro foi encontrado no banco
+            if (contaCorrente == null || contaCorrente.ConCodigo < 0)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de origem!\n";
 
+            //Validar o valor sacado
             if (valor <= 0)
                 Erros += "Não foi possível realizar o depósito, pois o valor informado é inválido!";
 
+            //Validar se existe saldo suficiente para o saque
             if (valor > contaCorrente.ConSaldo)
                 Erros += "Não foi possível realizar o saque, pois o saldo atual é menor que o valor informado!\n";
 
             if (string.IsNullOrEmpty(Erros))
             {
                 contaCorrente.ConSaldo -= valor;
-                ContaCorrenteRepositorio.Alterar(contaCorrente.ConCodigo, contaCorrente);
+                ContaCorrenteRepositorio.Alterar(contaCorrente);
             }
         }
 
@@ -104,16 +109,20 @@ namespace BancoFinal.Servicos
 
             ContaCorrente contaCorrenteOrigem = ContaCorrenteRepositorio.BuscarPorCodigo(codigoOrigem);
             ContaCorrente contaCorrenteDestino = ContaCorrenteRepositorio.BuscarPorCodigo(codigoDestino);
-
+            
+            //Validar se o registro da conta de origem foi encontrado no banco
             if (contaCorrenteOrigem == null || contaCorrenteOrigem.ConCodigo <= -1)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de origem!\n";
 
+            //Validar se o registro da conta de destino foi encontrado no banco
             if (contaCorrenteDestino == null || contaCorrenteDestino.ConCodigo <= -1)
                 Erros += "Não foi possível realizar a transferência, pois não foi selecionado uma conta corrente de destino!\n";
 
+            //Validar o valor sacado
             if (valor <= 0)
                 Erros += "Não foi possível realizar a transferência, pois o valor informado é inválido!\n";
 
+            //Validar se existe saldo suficiente para a transferência
             if (valor > contaCorrenteOrigem.ConSaldo)
                 Erros += "Não foi possível realizar a transferência, pois o saldo atual da conta corrente de origem é menor que o valor informado!\n";
 
@@ -121,8 +130,8 @@ namespace BancoFinal.Servicos
             {
                 contaCorrenteOrigem.ConSaldo -= valor;
                 contaCorrenteDestino.ConSaldo += valor;
-                ContaCorrenteRepositorio.Alterar(contaCorrenteOrigem.ConCodigo, contaCorrenteOrigem);
-                ContaCorrenteRepositorio.Alterar(contaCorrenteDestino.ConCodigo, contaCorrenteDestino);
+                ContaCorrenteRepositorio.Alterar(contaCorrenteOrigem);
+                ContaCorrenteRepositorio.Alterar(contaCorrenteDestino);
             }
 
         }

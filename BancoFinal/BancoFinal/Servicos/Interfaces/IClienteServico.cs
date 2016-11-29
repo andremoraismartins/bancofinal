@@ -1,5 +1,4 @@
 ﻿using BancoFinal.Entidades;
-using BancoFinal.Repositorios;
 
 namespace BancoFinal.Servicos.Interfaces
 {
@@ -9,6 +8,6 @@ namespace BancoFinal.Servicos.Interfaces
 
         void Adicionar(Cliente objeto);
 
-        void Alterar(int codigo, Cliente objeto);
+        void Alterar(Cliente objeto);
     }
 }

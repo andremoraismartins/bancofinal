@@ -1,5 +1,4 @@
 ﻿using BancoFinal.Entidades;
-using BancoFinal.Repositorios;
 
 namespace BancoFinal.Servicos.Interfaces
 {
@@ -9,7 +8,7 @@ namespace BancoFinal.Servicos.Interfaces
 
         void Adicionar(ContaCorrente objeto);
 
-        void Alterar(int codigo, ContaCorrente objeto);
+        void Alterar(ContaCorrente objeto);
 
         void Depositar(int codigo, decimal valor);
 

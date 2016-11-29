@@ -76,7 +76,7 @@ namespace BancoFinal.Formularios
                 }
                 else
                 {
-                    clienteServico.Alterar(cliente.CliCodigo, cliente);
+                    clienteServico.Alterar(cliente);
 
                     if (string.IsNullOrEmpty(clienteServico.Erros))
                     {

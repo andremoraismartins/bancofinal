@@ -16,10 +16,10 @@ namespace BancoFinal.Repositorios
                              new SqlParameter("@cliCpf", objeto.CliCpf));
         }
 
-        public void Alterar(int codigo, Cliente objetoAlterado)
+        public void Alterar(Cliente objetoAlterado)
         {
             Escrever(Procedures.ClienteAlterar,
-                        new SqlParameter("@cliCodigo", codigo),
+                        new SqlParameter("@cliCodigo", objetoAlterado.CliCodigo),
                         new SqlParameter("@cliNome", objetoAlterado.CliNome),
                         new SqlParameter("@cliCpf", objetoAlterado.CliCpf));
         }
